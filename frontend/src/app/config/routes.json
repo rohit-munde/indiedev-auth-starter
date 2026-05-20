@@ -4,7 +4,11 @@
     "login": "login",
     "fullLogin": "/auth/login",
     "register": "register",
-    "fullRegister": "/auth/register"
+    "fullRegister": "/auth/register",
+    "forgotPassword": "forgot-password",
+    "fullForgotPassword": "/auth/forgot-password",
+    "resetPassword": "reset-password",
+    "fullResetPassword": "/auth/reset-password"
   },
   "protected": {
     "root": "protected",

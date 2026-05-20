@@ -13,11 +13,15 @@ import { MatIconModule } from '@angular/material/icon';
 // Component Import
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +29,9 @@ import { RegisterComponent } from './pages/register/register.component';
     FormsModule,
     RouterModule.forChild([
       { path: AppRoutes.auth.login, component: LoginComponent },
-      { path: AppRoutes.auth.register, component: RegisterComponent }
+      { path: AppRoutes.auth.register, component: RegisterComponent },
+      { path: AppRoutes.auth.forgotPassword, component: ForgotPasswordComponent },
+      { path: AppRoutes.auth.resetPassword, component: ResetPasswordComponent }
     ]),
 
     // Angular Material Components

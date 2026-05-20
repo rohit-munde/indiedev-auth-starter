@@ -69,7 +69,7 @@
         <div class="form-group">
           <div class="label-wrapper">
             <label for="password" class="input-label">Password</label>
-            <a href="javascript:void(0)" class="forgot-link">Forgot password?</a>
+            <a [routerLink]="AppRoutes.auth.fullForgotPassword" class="forgot-link">Forgot password?</a>
           </div>
           <mat-form-field appearance="outline" class="custom-form-field">
             <input matInput id="password" [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="••••••••••••" autocomplete="current-password">
