@@ -14,6 +14,8 @@
   "errors": {
     "root": "error",
     "notFound": "404",
-    "fullNotFound": "/error/404"
+    "fullNotFound": "/error/404",
+    "unauthorized": "unauthorized",
+    "fullUnauthorized": "/error/unauthorized"
   }
 }
