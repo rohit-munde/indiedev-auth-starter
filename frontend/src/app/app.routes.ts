@@ -18,7 +18,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: AppRoutes.errors.root,
+    loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule)
+  },
+  {
     path: '**',
-    redirectTo: AppRoutes.auth.fullLogin.replace(/^\//, '')
+    redirectTo: AppRoutes.errors.fullNotFound.replace(/^\//, '')
   }
 ];

@@ -10,5 +10,10 @@
     "root": "protected",
     "dashboard": "dashboard",
     "fullDashboard": "/protected/dashboard"
+  },
+  "errors": {
+    "root": "error",
+    "notFound": "404",
+    "fullNotFound": "/error/404"
   }
 }
