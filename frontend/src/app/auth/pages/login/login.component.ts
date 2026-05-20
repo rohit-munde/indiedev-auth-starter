@@ -10,6 +10,7 @@ import { AppRoutes } from '../../../config/routes.config';
   standalone: false
 })
 export class LoginComponent {
+  public readonly AppRoutes = AppRoutes;
   private fb = inject(FormBuilder);
   private router = inject(Router);
 

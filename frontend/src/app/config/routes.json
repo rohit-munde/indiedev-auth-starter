@@ -2,7 +2,9 @@
   "auth": {
     "root": "auth",
     "login": "login",
-    "fullLogin": "/auth/login"
+    "fullLogin": "/auth/login",
+    "register": "register",
+    "fullRegister": "/auth/register"
   },
   "protected": {
     "root": "protected",

@@ -12,17 +12,20 @@ import { MatIconModule } from '@angular/material/icon';
 
 // Component Import
 import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 @NgModule({
   declarations: [
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     RouterModule.forChild([
-      { path: AppRoutes.auth.login, component: LoginComponent }
+      { path: AppRoutes.auth.login, component: LoginComponent },
+      { path: AppRoutes.auth.register, component: RegisterComponent }
     ]),
 
     // Angular Material Components
