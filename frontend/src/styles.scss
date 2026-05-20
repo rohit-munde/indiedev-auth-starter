@@ -1,1 +1,176 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$azure-palette,
+    tertiary: mat.$blue-palette,
+  ),
+  typography: (
+    brand-family: 'Inter',
+    plain-family: 'Inter',
+  )
+));
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f8fafc;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@include mat.theme($theme);
+
+// ----------------------------------------------------
+// Angular Material Custom Styling Overrides (Global)
+// ----------------------------------------------------
+.custom-form-field {
+  width: 100%;
+  
+  // Target outline container
+  .mdc-text-field--outlined {
+    background-color: #f8fafc !important;
+    border-radius: 8px !important;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+    
+    // Target outline borders
+    .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #e2e8f0 !important;
+        border-width: 1px !important;
+        transition: border-color 0.15s ease, border-width 0.15s ease;
+      }
+    }
+    
+    // Hover states
+    &:hover:not(.mdc-text-field--disabled) {
+      background-color: #f1f5f9 !important;
+      .mdc-notched-outline {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: #cbd5e1 !important;
+        }
+      }
+    }
+    
+    // Focus states
+    &.mdc-text-field--focused {
+      background-color: #ffffff !important;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      .mdc-notched-outline {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: #2563eb !important;
+          border-width: 1.5px !important;
+        }
+      }
+    }
+  }
+  
+  // Subscriptions to error states
+  .mdc-text-field--invalid {
+    background-color: #fff8f8 !important;
+    .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #ef4444 !important;
+      }
+    }
+    &.mdc-text-field--focused {
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+    }
+  }
+
+  // Alignment and spacings
+  .mat-mdc-text-field-wrapper {
+    height: 48px !important;
+    padding: 0 14px !important;
+    display: flex;
+    align-items: center;
+  }
+  
+  .mat-mdc-form-field-flex {
+    height: 100% !important;
+    align-items: center !important;
+  }
+
+  .mat-mdc-form-field-infix {
+    padding: 0 !important;
+    height: 100% !important;
+    display: flex;
+    align-items: center;
+    min-height: auto !important;
+  }
+
+  // Input text & placeholder
+  .mat-mdc-input-element {
+    font-size: 14.5px !important;
+    font-weight: 500 !important;
+    color: #0f172a !important;
+    caret-color: #2563eb !important;
+    height: 100% !important;
+    
+    &::placeholder {
+      color: #94a3b8 !important;
+      opacity: 1;
+    }
+  }
+
+  // Hide notch spacer since labels are external
+  .mdc-notched-outline__notch {
+    display: none !important;
+  }
+  
+  // Error block styling
+  .mat-mdc-form-field-subscript-wrapper {
+    margin-top: 4px !important;
+    padding: 0 !important;
+    font-size: 11.5px !important;
+    font-weight: 500;
+  }
+  
+  .mat-mdc-form-field-error {
+    color: #ef4444 !important;
+  }
+  
+  // Suffix button overrides
+  .mat-mdc-form-field-suffix {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+  }
+
+  // Toggle button style inside input
+  .toggle-password-btn {
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #64748b;
+    
+    span {
+      font-size: 20px !important;
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    
+    &:hover {
+      background-color: rgba(100, 116, 139, 0.08) !important;
+      color: #0f172a;
+    }
+  }
+}
