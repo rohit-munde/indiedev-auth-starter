@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AppRoutes } from '../config/routes.config';
 
 // Angular Material Imports
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,7 +22,7 @@ import { LoginComponent } from './pages/login/login.component';
     ReactiveFormsModule,
     FormsModule,
     RouterModule.forChild([
-      { path: 'login', component: LoginComponent }
+      { path: AppRoutes.auth.login, component: LoginComponent }
     ]),
 
     // Angular Material Components

@@ -1,0 +1,12 @@
+{
+  "auth": {
+    "root": "auth",
+    "login": "login",
+    "fullLogin": "/auth/login"
+  },
+  "protected": {
+    "root": "protected",
+    "dashboard": "dashboard",
+    "fullDashboard": "/protected/dashboard"
+  }
+}
