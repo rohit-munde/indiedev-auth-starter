@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 public class UserController {
@@ -24,12 +27,28 @@ public class UserController {
         return _userService.createUser(user);
     }
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping("/login")
     public UserResponse login(@RequestBody UserLoginDTO userLoginDTO) {
-        //go to my db and verify if user is present in the db: if yes give me that user and I'll share
-        // only restricted user data which is UserDetails object to the client
-        UserDetails userDetails = _userService.loadUserByUsername(userLoginDTO.getEmail());
-        return  new UserResponse(userDetails.getUsername());
+        // Fetch the full user object from the database
+        User user = _userService.getUserByEmail(userLoginDTO.getEmail());
+        
+        // Verify the password matches
+        if (!passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid password");
+        }
+
+        // Return the full UserResponse object
+        return new UserResponse(
+            user.getId(), 
+            user.getFullName(), 
+            user.getEmail(), 
+            user.getRole(), 
+            user.isActive(), 
+            user.isDeleted()
+        );
     }
 
     @GetMapping("/dashboard")
