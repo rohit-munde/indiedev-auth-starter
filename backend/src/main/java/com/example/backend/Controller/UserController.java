@@ -30,11 +30,11 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public UserResponse login(@RequestBody UserLoginDTO userLoginDTO) {
         // Fetch the full user object from the database
         User user = _userService.getUserByEmail(userLoginDTO.getEmail());
-        
+
         // Verify the password matches
         if (!passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid password");
@@ -42,13 +42,12 @@ public class UserController {
 
         // Return the full UserResponse object
         return new UserResponse(
-            user.getId(), 
-            user.getFullName(), 
-            user.getEmail(), 
-            user.getRole(), 
-            user.isActive(), 
-            user.isDeleted()
-        );
+                user.getId(),
+                user.getFullName(),
+                user.getEmail(),
+                user.getRole(),
+                user.isActive(),
+                user.isDeleted());
     }
 
     @GetMapping("/dashboard")

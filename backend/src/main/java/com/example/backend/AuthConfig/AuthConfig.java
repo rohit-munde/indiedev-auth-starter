@@ -17,13 +17,14 @@ public class AuthConfig {
     @Bean
     public SecurityFilterChain httpSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(authoriseRequests -> authoriseRequests
-                .requestMatchers("/register", "/login").permitAll()
-                .anyRequest().authenticated()
-            );
-            // Disabled .formLogin() so Spring Security doesn't intercept your custom /login POST request
-        
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authoriseRequests -> authoriseRequests
+                        .requestMatchers("/register", "/auth/login").permitAll()
+                        .requestMatchers("/dashboard").authenticated())
+                .formLogin(formLogin -> formLogin
+                        .defaultSuccessUrl("/dashboard", true)
+                        .permitAll());
+
         return httpSecurity.build();
     }
 }
