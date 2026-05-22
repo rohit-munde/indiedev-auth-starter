@@ -19,14 +19,10 @@ public class AuthConfig {
         httpSecurity
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authoriseRequests -> authoriseRequests
-                .requestMatchers("/register").permitAll()
+                .requestMatchers("/register", "/login").permitAll()
                 .anyRequest().authenticated()
-            )
-            .formLogin(formLogin -> formLogin
-                .loginPage("/login")
-                .defaultSuccessUrl("/dashboard", true)
-                .permitAll()
             );
+            // Disabled .formLogin() so Spring Security doesn't intercept your custom /login POST request
         
         return httpSecurity.build();
     }
