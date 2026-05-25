@@ -1,10 +1,9 @@
 package com.example.backend.Entity;
 
+import com.example.backend.Common.Base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -16,11 +15,7 @@ import java.util.List;
 
 
 @Entity
-public class User implements UserDetails {
-
-    @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-    private Long id;
+public class User extends BaseEntity implements UserDetails {
 
     @NotBlank(message = "Full name is required")
     @Size(min = 2, max = 340, message = "Name must be between 2 and 340 characters")
@@ -41,13 +36,8 @@ public class User implements UserDetails {
     @Column()
     private String role = "USER"; // Default role
 
-    @Column()
-    private boolean isActive = true; // Default to active
-
-    @Column()
-    private boolean isDeleted = false; // Soft delete flag
-
     public User() {}
+
 
     public User(String fullName, String email, String password) {
         this.fullName = fullName;
@@ -56,14 +46,6 @@ public class User implements UserDetails {
     }
 
     // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getFullName() {
         return fullName;
     }
@@ -125,20 +107,5 @@ public class User implements UserDetails {
     public void setRole(String role) {
         this.role = role;
     }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
 }
+
