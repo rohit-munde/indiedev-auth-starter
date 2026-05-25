@@ -81,3 +81,11 @@ If you see an error like `bind: address already in use` for ports `8080` or `420
    ```
 4. Save the file and run `docker compose up -d`.
 5. Access your backend endpoint at [http://localhost:8081/api](http://localhost:8081/api).
+
+---
+
+## 🤝 How to Contribute
+Want to start contributing to this project? We follow a strict git workflow and branch naming convention (requiring the GitHub Issue/Item ID).
+
+Please refer to the comprehensive **[CONTRIBUTING.md](file:///Users/rohitmunde/Documents/2.%20Coding/Springboot+%20Angular-Authenticaation-App/CONTRIBUTING.md)** guide in the root folder for step-by-step instructions (from cloning to creating your PR).
+
