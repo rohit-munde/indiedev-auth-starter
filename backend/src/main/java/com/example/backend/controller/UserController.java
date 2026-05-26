@@ -7,6 +7,7 @@ import com.example.backend.dto.UserResponse;
 import com.example.backend.entity.User;
 import com.example.backend.service.UserService;
 import com.example.backend.service.JwtService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,9 +16,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("users")
 public class UserController {
 
     private final AuthenticationManager authenticationManager;
@@ -30,14 +33,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<User> createUser(@RequestBody UserDto user) {
+    @PostMapping("register")
+    public ResponseEntity<User> createUser(@Valid @RequestBody UserDto user) {
         User createdUser = this.userService.createUser(user);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    @PostMapping("/auth/login")
-    public ResponseEntity<UserResponse> login(@RequestBody UserLoginDto userLoginDto) {
+    @PostMapping("login")
+    public ResponseEntity<UserResponse> login(@Valid @RequestBody UserLoginDto userLoginDto) {
         Authentication authenticationRequest = UsernamePasswordAuthenticationToken
                 .unauthenticated(userLoginDto.getEmail(), userLoginDto.getPassword());
         authenticationManager.authenticate(authenticationRequest);
@@ -58,12 +61,12 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
-    @GetMapping("/users/me")
+    @GetMapping("me")
     public ResponseEntity<UserResponseDto> getCurrentUser() {
         return ResponseEntity.ok(userService.getCurrentUser());
     }
 
-    @GetMapping("/dashboard")
+    @GetMapping("dashboard")
     public String dashboard() {
         return "This is dashboard";
     }
