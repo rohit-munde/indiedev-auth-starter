@@ -1,27 +1,17 @@
-package com.example.backend.DTO;
+package com.example.backend.dto;
 
-public class UserDTO {
-    private String fullName;
+public class UserLoginDto {
     private String email;
     private String password;
 
-    public UserDTO() {}
+    public UserLoginDto() {}
 
-    public UserDTO(String fullName, String email, String password) {
-        this.fullName = fullName;
+    public UserLoginDto(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
     // Getters and Setters
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
     public String getEmail() {
         return email;
     }

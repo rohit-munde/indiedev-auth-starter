@@ -1,13 +1,12 @@
-package com.example.backend.Controller;
+package com.example.backend.controller;
 
-import com.example.backend.DTO.UserDTO;
-import com.example.backend.DTO.UserLoginDTO;
-import com.example.backend.DTO.UserResponseDto;
-import com.example.backend.Entity.User;
-import com.example.backend.ResponseEntity.UserResponse;
-import com.example.backend.Services.UserService;
-import com.example.backend.Util.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.backend.dto.UserDto;
+import com.example.backend.dto.UserLoginDto;
+import com.example.backend.dto.UserResponseDto;
+import com.example.backend.dto.UserResponse;
+import com.example.backend.entity.User;
+import com.example.backend.service.UserService;
+import com.example.backend.service.JwtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,33 +20,31 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final UserService userService;
 
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    public UserService userService;
-
-    public UserController(UserService _userService) {
-        this.userService = _userService;
+    public UserController(AuthenticationManager authenticationManager, JwtService jwtService, UserService userService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
+        this.userService = userService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> createUser(@RequestBody UserDTO user) {
+    public ResponseEntity<User> createUser(@RequestBody UserDto user) {
         User createdUser = this.userService.createUser(user);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<UserResponse> login(@RequestBody UserLoginDTO userLoginDTO) {
+    public ResponseEntity<UserResponse> login(@RequestBody UserLoginDto userLoginDto) {
         Authentication authenticationRequest = UsernamePasswordAuthenticationToken
-                .unauthenticated(userLoginDTO.getEmail(), userLoginDTO.getPassword());
+                .unauthenticated(userLoginDto.getEmail(), userLoginDto.getPassword());
         authenticationManager.authenticate(authenticationRequest);
 
-        User user = userService.getUserByEmail(userLoginDTO.getEmail());
+        User user = userService.getUserByEmail(userLoginDto.getEmail());
 
-        String token = jwtUtil.generateToken(user.getEmail());
+        String token = jwtService.generateToken(user.getEmail());
 
         UserResponse userResponse = new UserResponse(
                 user.getId(),

@@ -1,6 +1,5 @@
-package com.example.backend.Entity;
+package com.example.backend.entity;
 
-import com.example.backend.Common.Base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,11 +7,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-
 
 @Entity
 public class User extends BaseEntity implements UserDetails {
@@ -24,20 +23,19 @@ public class User extends BaseEntity implements UserDetails {
 
     @NotBlank(message = "Email is required")
     @Email(message = "Please provide a valid email address")
-    @Column(nullable = false, unique = true, length = 150) // Explicit length for index optimization
+    @Column(nullable = false, unique = true, length = 150)
     private String email;
 
     @NotBlank(message = "Password is required")
     @Size(min = 8, max = 255, message = "Password must be at least 8 characters")
-    @Column(nullable = false, length = 255) // Enough room for BCrypt/Argon2 hashes
+    @Column(nullable = false, length = 255)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Column()
-    private String role = "USER"; // Default role
+    @Column
+    private String role = "USER";
 
     public User() {}
-
 
     public User(String fullName, String email, String password) {
         this.fullName = fullName;
@@ -64,7 +62,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
     public String getPassword() {
@@ -78,22 +76,22 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return isActive();
     }
 
     public void setPassword(String password) {
@@ -108,4 +106,3 @@ public class User extends BaseEntity implements UserDetails {
         this.role = role;
     }
 }
-

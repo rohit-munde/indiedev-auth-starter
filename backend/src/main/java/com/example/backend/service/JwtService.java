@@ -1,26 +1,41 @@
-package com.example.backend.Util;
+package com.example.backend.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
-import java.util.Date;
-import javax.crypto.SecretKey;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
-@Component
-public class JwtUtil {
-    
+import javax.crypto.SecretKey;
+import java.util.Date;
+
+@Service
+public class JwtService {
+
     @Value("${jwt.secret:your_secret_key_here_change_in_production}")
     private String jwtSecret;
-    
+
     @Value("${jwt.expiration:86400000}")
     private long jwtExpiration; // Default 24 hours in milliseconds
-    
-    public SecretKey getSigningKey() {
+
+    private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
+    public String extractEmail(String token) {
+        return Jwts.parser()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+
+    public boolean validateToken(String token, UserDetails userDetails) {
+        String email = extractEmail(token);
+        return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
 
     public boolean isTokenExpired(String token) {
         Date expiration = Jwts.parser()
@@ -39,6 +54,5 @@ public class JwtUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
-
     }
 }

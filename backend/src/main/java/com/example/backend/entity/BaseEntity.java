@@ -1,4 +1,4 @@
-package com.example.backend.Common.Base;
+package com.example.backend.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
