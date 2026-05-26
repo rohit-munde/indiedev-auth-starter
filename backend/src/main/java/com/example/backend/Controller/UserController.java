@@ -2,6 +2,7 @@ package com.example.backend.Controller;
 
 import com.example.backend.DTO.UserDTO;
 import com.example.backend.DTO.UserLoginDTO;
+import com.example.backend.DTO.UserResponseDto;
 import com.example.backend.Entity.User;
 import com.example.backend.ResponseEntity.UserResponse;
 import com.example.backend.Services.UserService;
@@ -58,6 +59,11 @@ public class UserController {
                 token);
 
         return ResponseEntity.ok(userResponse);
+    }
+
+    @GetMapping("/users/me")
+    public ResponseEntity<UserResponseDto> getCurrentUser() {
+        return ResponseEntity.ok(userService.getCurrentUser());
     }
 
     @GetMapping("/dashboard")
