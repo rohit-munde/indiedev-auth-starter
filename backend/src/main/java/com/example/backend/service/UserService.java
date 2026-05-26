@@ -3,6 +3,7 @@ package com.example.backend.service;
 import com.example.backend.dto.UserDto;
 import com.example.backend.dto.UserResponseDto;
 import com.example.backend.entity.User;
+import com.example.backend.exception.EmailAlreadyExistsException;
 import com.example.backend.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,7 +25,12 @@ public class UserService implements UserDetailsService {
     }
 
     public User createUser(UserDto userDto) {
-        User newUser = new User(userDto.getFullName(), userDto.getEmail(), passwordEncoder.encode(userDto.getPassword()));
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistsException();
+        }
+
+        User newUser = new User(userDto.getFullName(), userDto.getEmail(),
+                passwordEncoder.encode(userDto.getPassword()));
         return userRepository.save(newUser);
     }
 
@@ -45,8 +51,7 @@ public class UserService implements UserDetailsService {
                 user.getFullName(),
                 user.getEmail(),
                 user.getRole(),
-                user.isActive()
-        );
+                user.isActive());
     }
 
     @Override
