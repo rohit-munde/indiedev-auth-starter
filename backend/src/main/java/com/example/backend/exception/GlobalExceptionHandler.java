@@ -1,5 +1,7 @@
 package com.example.backend.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,6 +16,7 @@ import java.util.HashMap;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ApiError> handleBusinessException(BusinessException ex, HttpServletRequest request) {
@@ -66,7 +69,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
 
-    //TODO:
-    // How would I handle the JwtService exceptions
-    // What if any new error comes up and it gives us the any othger exception, how would we handle that? we need to handle that
+    // Generic Exception Handler in case unhandled exception comes and should not fuck up our server
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiError> handleGenericException(Exception ex, HttpServletRequest request) {
+        logger.error("An unexpected error occurred", ex);
+        ApiError apiError = new ApiError(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+                "An unexpected error occurred. Please try again later.",
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
