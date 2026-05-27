@@ -1,8 +1,16 @@
 package com.example.backend.exception;
 
-public abstract class BusinessException extends RuntimeException {
+import org.springframework.http.HttpStatus;
 
-    public BusinessException(String message) {
-        super(message); // ➔ user-friendly message goes here!
+public abstract class BusinessException extends RuntimeException {
+    private final HttpStatus status;
+
+    public BusinessException(String message, HttpStatus status) {
+        super(message);
+        this.status = status;
+    }
+
+    public HttpStatus getHttpErrorStatus() {
+        return status;
     }
 }

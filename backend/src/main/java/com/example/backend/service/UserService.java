@@ -3,7 +3,9 @@ package com.example.backend.service;
 import com.example.backend.dto.UserDto;
 import com.example.backend.dto.UserResponseDto;
 import com.example.backend.entity.User;
+import com.example.backend.exception.AccountDisabledException;
 import com.example.backend.exception.EmailAlreadyExistsException;
+import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,8 +37,14 @@ public class UserService implements UserDetailsService {
     }
 
     public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(email));
+
+        if(!user.isActive()) {
+            throw new AccountDisabledException();
+        }
+
+        return user;
     }
 
     public UserResponseDto getCurrentUser() {
@@ -44,7 +52,11 @@ public class UserService implements UserDetailsService {
         String email = authentication.getName();
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+                .orElseThrow(() -> new UserNotFoundException(email));
+
+        if(!user.isActive()) {
+            throw new AccountDisabledException();
+        }
 
         return new UserResponseDto(
                 user.getId(),
@@ -57,6 +69,6 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+                .orElseThrow(() -> new UsernameNotFoundException(email));
     }
 }
