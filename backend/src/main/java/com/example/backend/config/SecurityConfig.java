@@ -1,5 +1,6 @@
 package com.example.backend.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,6 +27,22 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authoriseRequests -> authoriseRequests
                         .requestMatchers("/users/register", "/users/login", "/forgot-password", "/reset-password", "/error").permitAll()
                         .anyRequest().authenticated())
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setContentType("application/json");
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+                            String apiErrorJson = "{"
+                                    + "\"timeStamp\":\"" + java.time.LocalDateTime.now() + "\","
+                                    + "\"status\":401,"
+                                    + "\"error\":\"Unauthorized\","
+                                    + "\"message\":\"Access Denied. You must provide a valid token to access this private resource.\","
+                                    + "\"path\":\"" + request.getRequestURI() + "\","
+                                    + "\"validationErrors\":null"
+                                    + "}";
+
+                            response.getWriter().write(apiErrorJson);
+                        }))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
