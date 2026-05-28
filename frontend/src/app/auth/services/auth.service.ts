@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { IRegisterResponse } from '../interfaces/response';
+import { ILoginResponse, IRegisterResponse } from '../interfaces/response';
 import { HttpClient } from '@angular/common/http';
-import { IRegisterRequest } from '../interfaces/request';
+import { ILoginRequest, IRegisterRequest } from '../interfaces/request';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 
@@ -15,5 +15,9 @@ export class AuthService {
 
   public register(request: IRegisterRequest): Observable<IRegisterResponse> {
     return this.http.post<IRegisterResponse>(`${this.baseURL}/users/register`, request);
+  }
+
+  public login(request: ILoginRequest): Observable<ILoginResponse> {
+    return this.http.post<ILoginResponse>(`${this.baseURL}/users/login`, request);
   }
 }

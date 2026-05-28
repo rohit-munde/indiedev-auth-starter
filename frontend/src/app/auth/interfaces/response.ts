@@ -1,3 +1,5 @@
+import { ROLES } from "../enums/roles.enum";
+
 export interface IAuthority {
     authority: string;
 }
@@ -19,4 +21,14 @@ export interface IRegisterResponse {
     username: string;
     active: boolean;
     deleted: boolean;
+}
+
+export interface ILoginResponse {
+    id: number,
+    fullName: string,
+    email: string,
+    role: ROLES,
+    isActive: boolean,
+    isDeleted: boolean,
+    token: string
 }
