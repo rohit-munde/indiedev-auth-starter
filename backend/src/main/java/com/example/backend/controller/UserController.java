@@ -1,9 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.UserDto;
-import com.example.backend.dto.UserLoginDto;
-import com.example.backend.dto.UserResponseDto;
-import com.example.backend.dto.UserResponse;
+import com.example.backend.dto.*;
 import com.example.backend.entity.User;
 import com.example.backend.service.UserService;
 import com.example.backend.service.JwtService;
@@ -67,7 +64,9 @@ public class UserController {
     }
 
     @GetMapping("dashboard")
-    public String dashboard() {
-        return "This is dashboard";
+    public ResponseEntity<DashboardResponse> dashboard() {
+        DashboardResponse res = new DashboardResponse();
+        res.setDummyStr("This is a protected dashboard endpoint. Only authenticated users can see this.");
+        return ResponseEntity.ok(res);
     }
 }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AppRoutes } from '../../config/routes.config';
 import { DashboardService } from './services/dashboard.service';
 import { IError } from '../../auth/interfaces/response';
+import { NotificationService } from '../../core/notification/notification.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,11 +14,11 @@ import { IError } from '../../auth/interfaces/response';
 export class DashboardComponent implements OnInit {
   private router = inject(Router);
 
-  constructor(private dashboardService: DashboardService) { }
+  constructor(private dashboardService: DashboardService, private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.dashboardService.getDashboard().subscribe({
-      next: (response) => { console.log(response) }
+      next: (response) => { this.notificationService.showSuccess(response) }
     })
   }
 
