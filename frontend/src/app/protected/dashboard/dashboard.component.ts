@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppRoutes } from '../../config/routes.config';
 import { DashboardService } from './services/dashboard.service';
-import { IError } from '../../auth/interfaces/response';
+import { IDashboardResponse, IError } from '../../auth/interfaces/response';
 import { NotificationService } from '../../core/notification/notification.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.dashboardService.getDashboard().subscribe({
-      next: (response) => { this.notificationService.showSuccess(response) }
+      next: (response: IDashboardResponse) => { this.notificationService.showSuccess(response.message) }
     })
   }
 

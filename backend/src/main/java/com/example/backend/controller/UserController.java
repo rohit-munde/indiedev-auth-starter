@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.*;
 import com.example.backend.entity.User;
+import com.example.backend.exception.ApiResponse;
 import com.example.backend.service.UserService;
 import com.example.backend.service.JwtService;
 import jakarta.validation.Valid;
@@ -31,13 +32,13 @@ public class UserController {
     }
 
     @PostMapping("register")
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserDto user) {
+    public ResponseEntity<ApiResponse<User>> createUser(@Valid @RequestBody UserDto user) {
         User createdUser = this.userService.createUser(user);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(new ApiResponse<>(true, "User created successfully", createdUser), HttpStatus.CREATED);
     }
 
     @PostMapping("login")
-    public ResponseEntity<UserResponse> login(@Valid @RequestBody UserLoginDto userLoginDto) {
+    public ResponseEntity<ApiResponse<UserResponse>> login(@Valid @RequestBody UserLoginDto userLoginDto) {
         Authentication authenticationRequest = UsernamePasswordAuthenticationToken
                 .unauthenticated(userLoginDto.getEmail(), userLoginDto.getPassword());
         authenticationManager.authenticate(authenticationRequest);
@@ -55,18 +56,18 @@ public class UserController {
                 user.isDeleted(),
                 token);
 
-        return ResponseEntity.ok(userResponse);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Login successful", userResponse));
     }
 
     @GetMapping("me")
-    public ResponseEntity<UserResponseDto> getCurrentUser() {
-        return ResponseEntity.ok(userService.getCurrentUser());
+    public ResponseEntity<ApiResponse<UserResponseDto>> getCurrentUser() {
+        return ResponseEntity.ok(new ApiResponse<>(true, "User retrieved successfully", userService.getCurrentUser()));
     }
 
     @GetMapping("dashboard")
-    public ResponseEntity<DashboardResponse> dashboard() {
+    public ResponseEntity<ApiResponse<DashboardResponse>> dashboard() {
         DashboardResponse res = new DashboardResponse();
         res.setDummyStr("This is a protected dashboard endpoint. Only authenticated users can see this.");
-        return ResponseEntity.ok(res);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Dashboard retrieved successfully", res));
     }
 }

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AppRoutes } from '../../../config/routes.config';
 import { AuthService } from '../../services/auth.service';
 import { ILoginRequest } from '../../interfaces/request';
+import { ILoginResponse } from '../../interfaces/response';
 
 @Component({
   selector: 'app-login',
@@ -30,13 +31,10 @@ export class LoginComponent {
       console.log('Login Form Submitted:', this.loginForm.value);
       const request = this.createLoginRequest();
       this.authService.login(request).subscribe({
-        next: (response) => {
-          console.log('Login Form Submitted:', response);
-          localStorage.setItem('token', response.token);
+        next: (payload: ILoginResponse) => {
+          const data = payload.data
+          localStorage.setItem('token', data.token);
           this.router.navigate([AppRoutes.protected.fullDashboard]);
-        },
-        error: (error) => {
-          console.error("This is fucked", error)
         }
       })
 

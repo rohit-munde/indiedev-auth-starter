@@ -24,7 +24,7 @@ export interface IRegisterResponse {
     deleted: boolean;
 }
 
-export interface ILoginResponse {
+export interface ILoginPayload {
     id: number,
     fullName: string,
     email: string,
@@ -34,15 +34,19 @@ export interface ILoginResponse {
     token: string
 }
 
-export interface IApiError {
-    timeStamp: string;
-    status: number;
-    error: string;
-    message: string;
-    path: string;
-    validationErrors?: Record<string, string>;
+export interface ILoginResponse extends IApiResponse<ILoginPayload> { }
+
+export interface IDashboardPayload {
+    dummyStr: string;
 }
 
+export interface IDashboardResponse extends IApiResponse<IDashboardPayload> { }
+
+export interface IApiResponse<T> {
+    success: boolean;
+    message: string;
+    data: T;
+}
 export interface IApiError {
     timeStamp: string;
     status: number;
