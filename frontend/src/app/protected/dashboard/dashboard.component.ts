@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppRoutes } from '../../config/routes.config';
 import { DashboardService } from './services/dashboard.service';
-import { IDashboardResponse, IError } from '../../auth/interfaces/response';
+import { IApiError, IDashboardResponse, IError } from '../../auth/interfaces/response';
 import { NotificationService } from '../../core/notification/notification.service';
 
 @Component({

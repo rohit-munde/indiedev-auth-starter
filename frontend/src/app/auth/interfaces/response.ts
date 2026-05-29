@@ -5,7 +5,7 @@ export interface IAuthority {
     authority: string;
 }
 
-export interface IRegisterResponse {
+export interface IRegisterPayload {
     id: number;
     createdAt: string;
     updatedAt: string;
@@ -23,6 +23,8 @@ export interface IRegisterResponse {
     active: boolean;
     deleted: boolean;
 }
+
+export interface IRegisterResponse extends IApiResponse<IRegisterPayload> { }
 
 export interface ILoginPayload {
     id: number,

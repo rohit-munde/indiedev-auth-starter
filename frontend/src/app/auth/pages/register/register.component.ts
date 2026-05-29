@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { AppRoutes } from '../../../config/routes.config';
 import { AuthService } from '../../services/auth.service';
 import { IRegisterRequest } from '../../interfaces/request';
+import { IError, IRegisterResponse } from '../../interfaces/response';
+import { NotificationService } from '../../../core/notification/notification.service';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +18,7 @@ export class RegisterComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private notificationService: NotificationService) { }
 
   registerForm: FormGroup = this.fb.group({
     fullName: ['', [Validators.required, Validators.minLength(2)]],
@@ -38,9 +40,21 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       const request = this.createRegisterRequest();
       this.authService.register(request).subscribe({
-        next: (response) => {
-          console.log('Register Form Submitted:', response);
-          this.router.navigate([AppRoutes.auth.fullLogin]);
+        next: (response: IRegisterResponse) => {
+          this.notificationService.showSuccess(response.message)
+          if (response.success) this.router.navigate([AppRoutes.auth.fullLogin]);
+        },
+        error: (error: IError) => {
+          const validationErrors = error.error.validationErrors;
+
+          if (validationErrors) {
+            Object.keys(validationErrors).forEach((field) => {
+              const formControl = this.registerForm.get(field);
+              if (formControl) {
+                formControl.setErrors({ serverError: validationErrors[field] });
+              }
+            });
+          }
         }
       }
       );
