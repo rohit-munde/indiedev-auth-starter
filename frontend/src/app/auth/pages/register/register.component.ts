@@ -40,13 +40,10 @@ export class RegisterComponent {
       this.authService.register(request).subscribe({
         next: (response) => {
           console.log('Register Form Submitted:', response);
-        },
-        error: (error) => {
-          console.error("Nice error:", error)
+          this.router.navigate([AppRoutes.auth.fullLogin]);
         }
       }
       );
-      this.router.navigate([AppRoutes.auth.fullLogin]);
     } else {
       this.registerForm.markAllAsTouched();
     }

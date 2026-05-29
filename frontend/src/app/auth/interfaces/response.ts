@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { ROLES } from "../enums/roles.enum";
 
 export interface IAuthority {
@@ -31,4 +32,26 @@ export interface ILoginResponse {
     isActive: boolean,
     isDeleted: boolean,
     token: string
+}
+
+export interface IApiError {
+    timeStamp: string;
+    status: number;
+    error: string;
+    message: string;
+    path: string;
+    validationErrors?: Record<string, string>;
+}
+
+export interface IApiError {
+    timeStamp: string;
+    status: number;
+    error: string;
+    message: string;
+    path: string;
+    validationErrors?: Record<string, string>;
+}
+
+export interface IError extends HttpErrorResponse {
+    error: IApiError
 }
