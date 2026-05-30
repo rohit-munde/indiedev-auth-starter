@@ -23,7 +23,9 @@ export class DashboardComponent implements OnInit {
   }
 
   onLogout(): void {
-    console.log('Redirecting to login...');
+    console.log('Clearing token and redirecting to login...');
+    localStorage.removeItem('token');
+    this.notificationService.showSuccess('Logged out successfully.');
     this.router.navigate([AppRoutes.auth.fullLogin]);
   }
 }
