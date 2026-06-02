@@ -44,6 +44,19 @@ export interface IDashboardPayload {
 
 export interface IDashboardResponse extends IApiResponse<IDashboardPayload> { }
 
+export interface IForgotPasswordPayload {
+    passwordResetUrl: string;
+}
+
+export interface IForgotPasswordResponse extends IApiResponse<IForgotPasswordPayload> { }
+
+export interface IResetPasswordPayload {
+    email: string;
+    passwordReset: boolean;
+}
+
+export interface IResetPasswordResponse extends IApiResponse<IResetPasswordPayload> { }
+
 export interface IApiResponse<T> {
     success: boolean;
     message: string;

@@ -33,6 +33,7 @@ export class LoginComponent {
       this.authService.login(request).subscribe({
         next: (payload: ILoginResponse) => {
           const data = payload.data
+          // localStorage.setItem('user', JSON.stringify(data));
           localStorage.setItem('token', data.token);
           this.router.navigate([AppRoutes.protected.fullDashboard]);
         }

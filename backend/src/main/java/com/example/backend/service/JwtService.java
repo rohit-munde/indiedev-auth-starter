@@ -54,4 +54,13 @@ public class JwtService {
                 .signWith(getSigningKey())
                 .compact();
     }
+
+    public String generateResetPasswordToken(String email) {
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000)) // 15 minutes
+                .signWith(getSigningKey())
+                .compact();
+    }
 }
